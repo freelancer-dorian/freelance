@@ -1,0 +1,28 @@
+=========================================================================================
+1. vimrc
+
+set number
+set hls is
+set nocompatible
+set backspace=indent,eol,start
+set tabstop=4
+
+syntax on
+colorscheme desert
+
+inoremap <C-s> <esc>:w<cr>                 " save files
+nnoremap <C-s> :w<cr>
+inoremap <C-d> <esc>:wq!<cr>               " save and exit
+nnoremap <C-d> :wq!<cr>
+inoremap <C-q> <esc>:qa!<cr>               " quit discarding changes
+nnoremap <C-q> :qa!<cr>
+
+set shiftwidth=4
+set autoindent
+set expandtab
+
+
+=========================================================================================
+2. inputrc
+
+set completion-ignore-case on
