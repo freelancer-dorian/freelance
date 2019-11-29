@@ -1,0 +1,24 @@
+Cmd to get diskinfo: 
+  wmic diskdrive get Name, Manufacturer, Model, InterfaceType, MediaType, SerialNumber
+
+Reference page:
+  https://www.virtualbox.org/manual/ch09.html#changevpd
+
+## show your installed VMs
+> VBoxManage list vms
+
+## Hard disk type: IDE
+VBoxManage setextradata "win7" "VBoxInternal/Devices/piix3ide/0/Config/PrimaryMaster/SerialNumber" "WD-WXA1AA840U8R"
+VBoxManage setextradata "win7" "VBoxInternal/Devices/piix3ide/0/Config/PrimaryMaster/FirmwareRevision" "04.01A04"
+VBoxManage setextradata "win7" "VBoxInternal/Devices/piix3ide/0/Config/PrimaryMaster/ModelNumber" "WDC WD10SPZX-16Z10T1"
+
+## Hard disk type: AHCI
+VBoxManage setextradata "win7" "VBoxInternal/Devices/ahci/0/Config/Port0/SerialNumber" "WD-WMAV2T7911809"
+VBoxManage setextradata "win7" "VBoxInternal/Devices/ahci/0/Config/Port0/FirmwareRevision" "04.01A04"
+VBoxManage setextradata "win7" "VBoxInternal/Devices/ahci/0/Config/Port0/ModelNumber" "WDC WD10SPZX-16Z10T1"
+
+## read out for verify
+VBoxManage getextradata "win7" "VBoxInternal/Devices/ahci/0/Config/Port0/SerialNumber"
+VBoxManage getextradata "win7" "VBoxInternal/Devices/ahci/0/Config/Port0/FirmwareRevision"
+VBoxManage getextradata "win7" "VBoxInternal/Devices/ahci/0/Config/Port0/ModelNumber"
+  
