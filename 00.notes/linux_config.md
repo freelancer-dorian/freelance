@@ -58,3 +58,8 @@ trusted-host=mirrors.aliyun.com
 	}
 ]
 
+=========================================================================================
+5. github add sshkeys
+https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh
+
+
