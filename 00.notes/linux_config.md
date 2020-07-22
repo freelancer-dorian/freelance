@@ -62,4 +62,6 @@ trusted-host=mirrors.aliyun.com
 5. github add sshkeys
 https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh
 
-
+=========================================================================================
+6. anaconda
+conda config --set auto_activate_base false
