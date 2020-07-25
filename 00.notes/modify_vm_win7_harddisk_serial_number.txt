@@ -22,3 +22,6 @@ VBoxManage getextradata "win7" "VBoxInternal/Devices/ahci/0/Config/Port0/SerialN
 VBoxManage getextradata "win7" "VBoxInternal/Devices/ahci/0/Config/Port0/FirmwareRevision"
 VBoxManage getextradata "win7" "VBoxInternal/Devices/ahci/0/Config/Port0/ModelNumber"
   
+
+## modify system size
+VBoxManage.exe modifyhd "C:\VM\win7\win7.vdi" --resize 70000
