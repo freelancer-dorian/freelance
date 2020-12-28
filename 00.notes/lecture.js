@@ -13,51 +13,56 @@ var LECTURE_PROGRESS_OFFSET = 2
 var LECTURE_PROGRESS_SUB_OFFSET = 1
 var LECTURE_TABLE_ITEM_COUNT_IN_ROW = 4
 
+
 var click_evt = new MouseEvent("click"); 
 var debugging = true
 
+// flags
+// ongoing-lecture index - indicated by table index offset
+window.ongoing_lecture = 0;
+
 
 function get_course_progress(course_node) {
-	if (course_node.length >= COURSE_PROGRESS_OFFSET + 1) {
-		return course_node.childNodes[COURSE_PROGRESS_OFFSET].innerHTML
-	} else {
-		return ""
-	}
+  if (course_node.length >= COURSE_PROGRESS_OFFSET + 1) {
+    return course_node.childNodes[COURSE_PROGRESS_OFFSET].innerHTML
+  } else {
+    return ""
+  }
 }
 function get_lecture_progress(lecture_node) {
-	if (lecture_node.childNodes.length >= LECTURE_PROGRESS_OFFSET + 1) {
-		return lecture_node.childNodes[LECTURE_PROGRESS_OFFSET].childNodes[LECTURE_PROGRESS_SUB_OFFSET].innerHTML
-	} else {
-		return ""
-	}
+  if (lecture_node.childNodes.length >= LECTURE_PROGRESS_OFFSET + 1) {
+    return lecture_node.childNodes[LECTURE_PROGRESS_OFFSET].childNodes[LECTURE_PROGRESS_SUB_OFFSET].innerHTML
+  } else {
+    return ""
+  }
 }
 
 function logging(log_content) {
-	if (debugging) 
-		console.log(log_content);
+  if (debugging) 
+    console.log(log_content);
 }
 
 function get_childNode(any_node, idx) {
-	if (any_node.childNodes.length >= idx) {
-		return any_node.childNodes[idx]
-	} else {
-		return null
-	}
+  if (any_node.childNodes.length >= idx) {
+    return any_node.childNodes[idx]
+  } else {
+    return null
+  }
 }
 
 function validate_lecture(lecture) {
-	if (lecture.childNodes.length == LECTURE_TABLE_ITEM_COUNT_IN_ROW) 
-		return true
-	else
-		return false
+  if (lecture.childNodes.length == LECTURE_TABLE_ITEM_COUNT_IN_ROW) 
+    return true
+  else
+    return false
 }
 
 
 
 
 function checking() {
-	logging("OK!")
-	task = self.setInterval(main, 100)
+  logging("OK!")
+  task = self.setInterval(main, 10000)
   // ************************************** main sequence **********************************
 
   // 1. course list or lecture list
@@ -68,10 +73,10 @@ function checking() {
       logging("mainfram found")
       var tables = document.getElementById("mainframe").contentWindow.document.getElementsByTagName("table")
       var table_count = tables.length
-			logging("table count: "+table_count)
+      logging("table count: "+table_count)
       // 1.1 course list
       if(table_count == 1){
-        // 	a. find first un-complete course
+        //  a. find first un-complete course
         var course_list = get_childNode(tables[0], 0)
         if (course_list.length >= COURSE_TABLE_MIN_SIZE) {
           for (var i = 1; i < course_list.length; i++) {
@@ -82,13 +87,14 @@ function checking() {
             }
           }
         }
-        // 	b. else prmpt( other ways inform TBD) all courses are completed
+        //  b. else prmpt( other ways inform TBD) all courses are completed
       }
       // 1.2 check lecture list and play the un-completed list in the queue
       if(table_count >=2) {
 
-        window.clearInterval(task)
-        // 	get entire lecture list and check if any lecture uncomplete
+        //////////////////////////////////////////////////////////////////////////////////////////////////// Stop interval task
+        // window.clearInterval(task)
+        //  get entire lecture list and check if any lecture uncomplete
         var lecture_table_outer = document.getElementById("mainframe").contentWindow.document.getElementsByTagName("table")[1]
         if (get_childNode(lecture_table_outer,0) != null) {
           var lecture_table = lecture_table_outer.childNodes[0]
@@ -100,16 +106,26 @@ function checking() {
               if(validate_lecture(lecture)) {
                 var lecture_progress = get_lecture_progress(lecture)
                 logging(lecture.childNodes[1].innerHTML + " " + lecture_progress)
-                if(lecture_progress != "1000%") { ////////////////////////////////////////////////////////// Manual updated progress
-                  logging("hit lecture and play course")
-									lecture.childNodes[3].childNodes[0].dispatchEvent(click_evt)
+
+                if ((lecture_progress == "100%") && window.ongoing_lecture == i) {
+//                    window.ongoing_lecture = 0;
+                }
+                ////////////////////////////////////////////////////////// Manual updated progress
+                if((lecture_progress != "1000%") && (lecture_progress != "")) { 
+                  logging("hit lecture check ongoing status before play it and current index is: " + window.ongoing_lecture )
+                  if (window.ongoing_lecture == 0) {
+                    window.ongoing_lecture = i;
+                    lecture.childNodes[3].childNodes[0].dispatchEvent(click_evt)
+                  }                 
                   break
                 }                
-              }	
+              } 
             }
           }
-        }	
-        // 	referh to get the latest progress
+        } 
+        //  referh to get the latest progress
+        var control_table = document.getElementById("mainframe").contentWindow.document.getElementsByTagName("table")[0]
+        control_table.childNodes[1].childNodes[4].childNodes[1].childNodes[3].dispatchEvent(click_evt)
       }
     }
     else {
@@ -119,5 +135,4 @@ function checking() {
 }
 
 
-logging("MONKEY is working V2!!!")
 checking()
